@@ -48,6 +48,7 @@ class TestMain(unittest.TestCase):
         """单字符重复符号"""
         # https://ja.wikipedia.org/wiki/%E8%B8%8A%E3%82%8A%E5%AD%97
         # 々
+        self.assertEqual("々", convert_repeated_single_sign("々"))
         self.assertEqual("正正堂堂", convert_repeated_single_sign("正々堂々"))
         self.assertEqual("段段", convert_repeated_single_sign("段々"))
         self.assertEqual("赤裸裸", convert_repeated_single_sign("赤裸々"))
@@ -64,14 +65,17 @@ class TestMain(unittest.TestCase):
         # self.assertEqual("部分部分", convert_repeated_single_sign("部々分々"))
 
         # 〻 現代では「〻」は「々」と書き換えられ、主に縦書きの文章に用いる。
+        self.assertEqual("〻", convert_repeated_single_sign("〻"))
         self.assertEqual("屡屡", convert_repeated_single_sign("屡〻"))
 
         # ゝ 平仮名繰返し記号
+        self.assertEqual("ゝ", convert_repeated_single_sign("ゝ"))
         self.assertEqual("ここ", convert_repeated_single_sign("こゝ"))
         self.assertEqual("こころ", convert_repeated_single_sign("こゝろ"))
         self.assertEqual("わななかした", convert_repeated_single_sign("わなゝかした"))
 
         # ヽ 片仮名繰返し記号
+        self.assertEqual("ヽ", convert_repeated_single_sign("ヽ"))
         self.assertEqual("ハハヽヽ", convert_repeated_single_sign("ハヽヽヽ"))
         # 曾ては、妣 （ ハヽ ） が国として、恋慕の思ひをよせた此国は、現実の悦楽に満ちた楽土として、見かはすばかりに変つて了うた。
         # https://www.aozora.gr.jp/cards/000933/files/13212_14465.html
@@ -79,6 +83,7 @@ class TestMain(unittest.TestCase):
 
     def test_convert_repeated_single_daku_sign(self):
         """单字符浊音重复符号"""
+        self.assertEqual("ゞ", convert_repeated_single_daku_sign("ゞ"))
         # https://ja.wikipedia.org/wiki/%E8%B8%8A%E3%82%8A%E5%AD%97#%E3%82%9D%E3%81%A8%E3%83%BD%EF%BC%88%E4%B8%80%E3%81%AE%E5%AD%97%E7%82%B9%EF%BC%89
         self.assertEqual("ただ", convert_repeated_single_daku_sign("たゞ"))
         self.assertEqual("みすず飴", convert_repeated_single_daku_sign("みすゞ飴"))
@@ -89,8 +94,10 @@ class TestMain(unittest.TestCase):
         """多字符重复符号"""
         # ／＼
         # Unicodeのブロックでは、収録されているの〳〵だが、
+        self.assertEqual("〳〵", convert_repeated_double_sign("〳〵"))
         # https://ja.wikipedia.org/wiki/CJK%E3%81%AE%E8%A8%98%E5%8F%B7%E5%8F%8A%E3%81%B3%E5%8F%A5%E8%AA%AD%E7%82%B9
         # 青空文庫では「／＼」を使っている。
+        self.assertEqual("／＼", convert_repeated_double_sign("／＼"))
         # https://www.aozora.gr.jp/cards/001383/files/56641_59496.html
         # 時々両国で催される刺青会では参会者おの／＼肌を叩いて、互に奇抜な意匠を誇り合い、評しあった。
         self.assertEqual("おのおの", convert_repeated_double_sign("おの／＼"))
@@ -98,6 +105,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual("おのおの", convert_repeated_double_sign("おの〳〵"))
         self.assertEqual("くり返しくり返し", convert_repeated_double_sign("くり返し〳〵"))
         # 〱
+        self.assertEqual("〱", convert_repeated_double_sign("〱"))
         self.assertEqual("見る見る", convert_repeated_double_sign("見る〱"))
         # https://ja.wikipedia.org/wiki/%E8%B8%8A%E3%82%8A%E5%AD%97#%E3%80%B1%EF%BC%88%E3%81%8F%E3%81%AE%E5%AD%97%E7%82%B9%EF%BC%89
         self.assertEqual("どうしてどうして", convert_repeated_double_sign("どうして〱"))
@@ -107,6 +115,7 @@ class TestMain(unittest.TestCase):
     def test_convert_repeated_double_daku_sign(self):
         """多字符浊音符号"""
         # https://ja.wikisource.org/wiki/%E3%81%8F%E3%82%8A%E3%81%8B%E3%81%B8%E3%81%97%E7%AC%A6%E5%8F%B7%E3%81%AE%E4%BD%BF%E3%81%B2%E6%96%B9
+        self.assertEqual("〴〵", convert_repeated_double_daku_sign("〴〵"))
         self.assertEqual("散り散り", convert_repeated_double_daku_sign("散り〴〵"))
         self.assertEqual("代わる代わる", convert_repeated_double_daku_sign("代わる〴〵"))
         # 请注意，这个样例并非来自真实的使用场景，仅用作测试

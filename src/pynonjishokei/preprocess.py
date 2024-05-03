@@ -130,7 +130,7 @@ def convert_repeated_double_sign(input_text: str) -> str:
     Returns:
         str: The text with converted repeated double sign.
     """
-    match = re.match(r"^(.*?)(〳〵|／＼|〱)$", input_text)
+    match = re.match(r"^(.+)(〳〵|／＼|〱)$", input_text)
 
     if not match:
         return input_text
