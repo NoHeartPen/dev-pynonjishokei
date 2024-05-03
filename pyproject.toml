@@ -1,10 +1,10 @@
 [project]
-name = "example_package_YOUR_USERNAME_HERE"
+name = "pynonjishokei"
 version = "0.0.1"
 authors = [
   { name="NoHeartPen", email="NoHeartPen@outlook.com" },
 ]
-description = "A small example package"
+description = "A japanese morphological analyzer designed for dictionary retrieval. "
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
