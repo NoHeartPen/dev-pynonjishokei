@@ -7,7 +7,8 @@ import sys
 import time
 from textwrap import dedent
 
-from main import scan_input_string
+# pylint: disable=E0402
+from src.nonjishokei.main import scan_input_string  # type: ignore
 
 
 def init_logging(logging_level: int = logging.DEBUG):
@@ -20,23 +21,23 @@ def init_logging(logging_level: int = logging.DEBUG):
     logging.basicConfig(
         handlers=[
             logging.FileHandler(
-                f"{time.strftime('%Y-%m-%d', time.localtime()) }.log", encoding="utf-8"
+                f"{time.strftime('%Y-%m-%d', time.localtime())}.log", encoding="utf-8"
             ),
             logging.StreamHandler(sys.stderr),
         ],
         level=logging.DEBUG,
-        format="%(asctime)s %(filename)s %(levelname)s %(message)s",
+        format="%(asc_time)s %(file_name)s %(level_name)s %(message)s",
         datefmt="%a %d %b %Y %H:%M:%S",
     )
     logging.disable(logging_level)
 
 
 def test_convert_conjugate(test_file: str, converted_file: str):
-    """Covers all collections of nonjishokei
+    """Covers all collections of pynonjishokei
         覆盖所有收集的非辞書型
 
     Args:
-        test_file (str): Includes all nonjishokei file test paths.
+        test_file (str): Includes all pynonjishokei file test paths.
         converted_file (str): Path where test results are saved.
     """
     with open(test_file, "r", encoding="utf-8") as f, open(
@@ -60,14 +61,14 @@ def cal_accuracy(converted_result_file: str, accuracy_result_file: str) -> str:
         计算推导结果与正确答案的比例
 
     Args:
-        converted_result (str): Includes all converted result file test paths.
-        accuracy_result (str): Path where calculate results are saved.
+        converted_result_file (str): Includes all converted result file test paths.
+        accuracy_result_file (str): Path where calculate results are saved.
 
     Returns:
         str: The ratio of derivation results to correct answers.
     """
     reg = re.compile(
-        r"(?P<converted_jishokei>.*?) (?P<nonjishokei>.*?)\:(?P<jishokei>.*?)\n"
+        r"(?P<converted_jishokei>.*?) (?P<pynonjishokei>.*?):(?P<jishokei>.*?)\n"
     )
     true_count = 0
     false_count = 0
@@ -84,7 +85,7 @@ def cal_accuracy(converted_result_file: str, accuracy_result_file: str) -> str:
             converted_result_list = match.group("converted_jishokei").split(",")
             result_template = dedent(
                 f"""converted_jishokei<{match.group('converted_jishokei')}>
-                    nonjishokei<{match.group('nonjishokei')}>
+                    pynonjishokei<{match.group('pynonjishokei')}>
                     jishokei<{match.group("jishokei")}>"""
             )
             if match.group("jishokei") not in converted_result_list:
@@ -93,7 +94,7 @@ def cal_accuracy(converted_result_file: str, accuracy_result_file: str) -> str:
                 s.write(f"False {result_template.strip()}\n")
             else:
                 true_count += 1
-                s.write(f"True {result_template.strip()}\n")
+                # s.write(f"True {result_template.strip()}\n")
         return str(round((true_count / (true_count + false_count)) * 100, 3)) + "%"
 
 
