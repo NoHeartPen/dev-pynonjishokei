@@ -2,7 +2,7 @@
 
 import unittest
 
-from main import scan_input_string
+from src.pynonjishokei.main import scan_input_string
 
 
 class TestMain(unittest.TestCase):

@@ -3,7 +3,7 @@
 import unittest
 from textwrap import dedent
 
-from ..src.pynonjishokei.preprocess import (
+from src.pynonjishokei.preprocess import (
     convert_half_full_width,
     convert_kata_to_hira,
     convert_repeated_double_daku_sign,
@@ -103,7 +103,9 @@ class TestMain(unittest.TestCase):
         self.assertEqual("おのおの", convert_repeated_double_sign("おの／＼"))
         # 〳〵
         self.assertEqual("おのおの", convert_repeated_double_sign("おの〳〵"))
-        self.assertEqual("くり返しくり返し", convert_repeated_double_sign("くり返し〳〵"))
+        self.assertEqual(
+            "くり返しくり返し", convert_repeated_double_sign("くり返し〳〵")
+        )
         # 〱
         self.assertEqual("〱", convert_repeated_double_sign("〱"))
         self.assertEqual("見る見る", convert_repeated_double_sign("見る〱"))
@@ -117,9 +119,13 @@ class TestMain(unittest.TestCase):
         # https://ja.wikisource.org/wiki/%E3%81%8F%E3%82%8A%E3%81%8B%E3%81%B8%E3%81%97%E7%AC%A6%E5%8F%B7%E3%81%AE%E4%BD%BF%E3%81%B2%E6%96%B9
         self.assertEqual("〴〵", convert_repeated_double_daku_sign("〴〵"))
         self.assertEqual("散り散り", convert_repeated_double_daku_sign("散り〴〵"))
-        self.assertEqual("代わる代わる", convert_repeated_double_daku_sign("代わる〴〵"))
+        self.assertEqual(
+            "代わる代わる", convert_repeated_double_daku_sign("代わる〴〵")
+        )
         # 请注意，这个样例并非来自真实的使用场景，仅用作测试
-        self.assertEqual("かわるがわる", convert_repeated_double_daku_sign("かわる〴〵"))
+        self.assertEqual(
+            "かわるがわる", convert_repeated_double_daku_sign("かわる〴〵")
+        )
         # https://www.aozora.gr.jp/cards/001383/files/56641_59496.html
         # 彼は今始めて女の妙相みょうそうをしみ／″＼味わう事が出来た。
         self.assertEqual("しみじみ", convert_repeated_double_daku_sign("しみ／″＼"))
