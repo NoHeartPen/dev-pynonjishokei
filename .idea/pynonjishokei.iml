@@ -8,9 +8,12 @@
     <orderEntry type="jdk" jdkName="Python 3.12 (pynonjishokei) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="" />
+  </component>
   <component name="PyDocumentationSettings">
-    <option name="format" value="PLAIN" />
-    <option name="myDocStringFormat" value="Plain" />
+    <option name="format" value="GOOGLE" />
+    <option name="myDocStringFormat" value="Google" />
   </component>
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">
