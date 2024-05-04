@@ -8,7 +8,7 @@ import time
 from textwrap import dedent
 
 # pylint: disable=E0402
-from src.nonjishokei.main import scan_input_string  # type: ignore
+from src.pynonjishokei.main import scan_input_string  # type: ignore
 
 
 def init_logging(logging_level: int = logging.DEBUG):
@@ -26,7 +26,7 @@ def init_logging(logging_level: int = logging.DEBUG):
             logging.StreamHandler(sys.stderr),
         ],
         level=logging.DEBUG,
-        format="%(asc_time)s %(file_name)s %(level_name)s %(message)s",
+        format="%(as_ctime)s %(file_name)s %(level_name)s %(message)s",
         datefmt="%a %d %b %Y %H:%M:%S",
     )
     logging.disable(logging_level)
