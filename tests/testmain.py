@@ -1,7 +1,10 @@
+# test_main.py
+# !/usr/bin/env python3
 """ main.py 单元测试"""
 
 import unittest
 
+from src.pynonjishokei.main import convert_conjugate
 from src.pynonjishokei.main import scan_input_string
 
 
@@ -366,6 +369,49 @@ class TestMain(unittest.TestCase):
         # 問お
         # 「問おう。あなたがわたしのマスターか」
         self.assertIn("問う", scan_input_string("問おう"))
+
+    def test_convert_conjugate(self):
+        """测试 main.py 中的 convert_conjugate 方法
+        注意：只测试与原型等长部分能否正确还原为辞书形
+        """
+        test_cases = {
+            # v5
+            "書く": ["書か", "書き", "書け", "書こ", "書い"],
+            "泳ぐ": ["泳ぐ", "泳ぎ", "泳げ", "泳ご", "泳い"],
+            "指す": ["指さ", "指し", "指せ", "指そ"],
+            "立つ": ["立た", "立ち", "立て", "立と", "立っ"],
+            "死ぬ": ["死な", "死に", "死ね", "死の", "死ん"],
+            "飛ぶ": ["飛ば", "飛び", "飛べ", "飛ぼ", "飛ん"],
+            "読む": ["読ま", "読み", "読め", "読も", "読ん"],
+            "帰る": ["帰ら", "帰り", "帰れ", "帰ろ", "帰っ"],
+            # adj
+            "高い": ["高か", "高く", "高け", "高さ", "高す", "高み", "高そ"],
+            # v1
+            "食べる": [
+                "食べろ",
+                "食べよ",
+                "食べな",
+                "食べま",
+                "食べた",
+                "食べれ",
+                "食べて",
+                "食べら",
+                "食べさ",
+                "食べず",
+                "食べぬ",
+                "食べ、",
+                "食べと",
+                "食べち",
+                "食べせ",
+                "食べん",
+                "食べ",
+            ],
+        }
+        for expected_result, test_case_list in test_cases.items():
+            for test_case in test_case_list:
+                with self.subTest(expected_result=expected_result, test_case=test_case):
+                    result_list = convert_conjugate(test_case)
+                    self.assertIn(expected_result, result_list)
 
 
 if __name__ == "__main__":
