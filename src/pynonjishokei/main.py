@@ -18,7 +18,7 @@ logging.basicConfig(
         logging.StreamHandler(sys.stderr),
     ],
     level=logging.DEBUG,
-    format="%(as_ctime)s %(filename)s %(level_name)s %(message)s",
+    format="%(asctime)s %(filename)s %(levelname)s %(message)s",
     datefmt="%a %d %b %Y %H:%M:%S",
 )
 
@@ -154,7 +154,7 @@ def scan_input_string(input_text: str) -> list:
     # 记录扫描过程中的推导结果
     scan_process_list = []
     for input_index in range(len(input_text) + 1):
-        scanned_input_text = input_text[0: input_index + 1]
+        scanned_input_text = input_text[0 : input_index + 1]
         logging.debug("scanned_input_text: %s", scanned_input_text)
         scanned_input_list.append(scanned_input_text)
 
