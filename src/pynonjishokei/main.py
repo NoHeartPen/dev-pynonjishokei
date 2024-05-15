@@ -28,10 +28,10 @@ def read_rule_file(rule_file: str) -> Dict[str, list[str]]:
         加载规则文件
 
     Args:
-        rule_file (str): input file path
+        rule_file: input file path
 
     Returns:
-        dict: json file content
+        json file content
     """
     with open(rule_file, "r", encoding="utf-8") as f:
         return json.loads(f.read())
@@ -53,10 +53,10 @@ def convert_orthography(input_text: str) -> list | None:
         通过查询确认推导结果是否正确，同时消除假名书写造成的非辞書型，比如【気づく】和【気付く】
 
     Args:
-        input_text (str): a form of a word that will not appear as an entry in a dictionary
+        input_text: a form of a word that will not appear as an entry in a dictionary
 
     Returns:
-        str: the form of a word that appears as an entry in a dictionary
+        the form of a word that appears as an entry in a dictionary
     """
     if input_text in orthography_rule_dict:
         return orthography_rule_dict[input_text]
@@ -69,10 +69,10 @@ def convert_conjugate(input_text: str) -> list:
         还原动词的活用变形
 
     Args:
-        input_text (str): A String containing the conjugation.
+        input_text: A String containing the conjugation.
 
     Returns:
-        list: The list with conjugation converted to the basic form.
+        The list with conjugation converted to the basic form.
     """
     input_stem = input_text[0:-1]
     input_last_letter = input_text[-1]
@@ -113,10 +113,10 @@ def convert_nonjishokei(input_text: str) -> list:
         将非辞书形还原为辞书形
 
     Args:
-        input_text (str): A String containing the pynonjishokei.
+        input_text: A String containing the pynonjishokei.
 
     Returns:
-        list:The list with pynonjishokei converted to the jishokei.
+        The list with pynonjishokei converted to the jishokei.
     """
     # 还原动词的活用变形
     converted_conjugate_list = convert_conjugate(input_text)
@@ -138,10 +138,10 @@ def scan_input_string(input_text: str) -> list:
         采用最长一致法扫描字符串，推导并返回所有可能的辞书形
 
     Args:
-        input_text (str): The string to scan.
+        input_text: The string to scan.
 
     Returns:
-        list: A list of converted jishokei.
+        A list of converted jishokei.
     """
     if input_text == "":
         return []
