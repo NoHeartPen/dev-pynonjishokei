@@ -123,13 +123,18 @@ def convert_nonjishokei(input_text: str) -> list:
     # 检查还原结果
     orthography_list: list[str] = []
     logging.debug("all converted conjugate list: %s", converted_conjugate_list)
-    for i in converted_conjugate_list:
-        orthography_text = convert_orthography(i)
+    for converted_word in converted_conjugate_list:
+        orthography_text = convert_orthography(converted_word)
         if orthography_text is not None:
+            # 获取辞书形
+            # TODO 注意这里的逻辑其实可以优化233
             orthography_list.extend(set(orthography_text))
     output_list = []
-    for i in orthography_list:
-        output_list.append(i)
+    # TODO 列表推导式重写
+    # TODO 这里可以试着读取用户配置的默认最大推导输出数量，然后返回列表的前几项
+    # 注意能这样做的前提是列表的排序有一定的规则可循
+    for orthography_word in orthography_list:
+        output_list.append(orthography_word)
     return output_list
 
 
@@ -150,44 +155,54 @@ def scan_input_string(input_text: str) -> list:
     input_text = preprocess(input_text)
 
     # 记录扫描的临时字符串
-    scanned_input_list = []
+    scanned_input_list: List[str] = []
     # 记录扫描过程中的推导结果
-    scan_process_list = []
+    scanned_process_list: List[str] = []
     for input_index in range(len(input_text) + 1):
         scanned_input_text = input_text[0 : input_index + 1]
         logging.debug("scanned_input_text: %s", scanned_input_text)
         scanned_input_list.append(scanned_input_text)
 
         # 特殊规则
-        special_output_text = special_rule_dict.get(scanned_input_text)
-        if special_output_text is not None:
-            for i in special_output_text:
-                scan_process_list.append(i)
+        special_output_list = special_rule_dict.get(scanned_input_text)
+        if special_output_list is not None:
+            for special_output_text in special_output_list:
+                logging.debug(
+                    "add %s to scanned_process_list for special rule",
+                    special_output_text,
+                )
+                scanned_process_list.append(special_output_text)
 
         # TODO 用户自定义的转换规则
 
-        scan_output_text = convert_nonjishokei(scanned_input_text)
-        for i in scan_output_text:
-            logging.debug("add %s to scan_process_list", i)
-            scan_process_list.append(i)
+        converted_jishokei_list = convert_nonjishokei(scanned_input_text)
+        for converted_jishokei_text in converted_jishokei_list:
+            logging.debug(
+                "add %s to scanned_process_list for converted jishokei",
+                converted_jishokei_text,
+            )
+            scanned_process_list.append(converted_jishokei_text)
 
     # 返回给用户的扫描结果
-    scan_output_list: List[str] = []
+    scanned_output_list: List[str] = []
     # 优先展示更长字符串的扫描结果，提高复合动词的使用体验
-    for i in reversed(scan_process_list):
+    for scanned_process_text in reversed(scanned_process_list):
         # 只添加第一次的推导结果
-        if i not in scan_output_list:
+        if scanned_process_text not in scanned_output_list:
             # 不添加扫描过程中的临时字符串
+            # TODO 直接删除可能会导致意想不到的问题
+            # 如果输入的字符串就是原型：食べる。
+            # 更好的做法应该是同时判断是否在用户自己构建的辞典索引中
             # if i not in scanned_input_list:
-            scan_output_list.append(i)
+            scanned_output_list.append(scanned_process_text)
 
     # 将输入的字符串作为最后一个结果返回
     # 方便用户在程序无法推导出正确结果时快速编辑
-    if input_text not in scan_output_list:
-        logging.debug("add input_text %s to scan_process_list", input_text)
-        scan_output_list.append(input_text)
+    if input_text not in scanned_output_list:
+        logging.debug("add input_text %s to scanned_output_list", input_text)
+        scanned_output_list.append(input_text)
 
-    return scan_output_list
+    return scanned_output_list
 
 
 if __name__ == "__main__":
