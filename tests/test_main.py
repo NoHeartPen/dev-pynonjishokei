@@ -13,6 +13,7 @@ class TestMain(unittest.TestCase):
 
     def test_scan_input_string(self):
         """测试 main.py 中的 scan_input_string 方法"""
+        # TODO 使用表测试重写下面的测试
         # 形容词测试
         # 高か
         self.assertIn("高い", scan_input_string("高かろう"))
@@ -412,6 +413,13 @@ class TestMain(unittest.TestCase):
                 with self.subTest(expected_result=expected_result, test_case=test_case):
                     result_list = convert_conjugate(test_case)
                     self.assertIn(expected_result, result_list)
+
+    # def test_convert_nonjishokei(self):
+    #     # TODO 测试 convert_nonjishokei 方法，注意该方法和上面 convert_conjugate 的区别在于：这一步要准确判断去除列表后的数据
+    #     self.assertEqual()
+
+    # def test_convert_orthography(self):
+    # TODO 这个东西测试的意义就在于防止修改之后索引出现问题，所以这一步的测试其实是要遍历查询v2词库中的所有数据么
 
 
 if __name__ == "__main__":
