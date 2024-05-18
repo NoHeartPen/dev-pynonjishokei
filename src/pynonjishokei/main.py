@@ -37,16 +37,6 @@ def read_rule_file(rule_file: str) -> Dict[str, list[str]]:
         return json.loads(f.read())
 
 
-CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-RULE_PATH = os.path.join(CURRENT_PATH, "rule")
-orthography_rule_path: str = os.path.join(RULE_PATH, "index_v3.json")
-orthography_rule_dict: Dict[str, list[str]] = read_rule_file(orthography_rule_path)
-conjugate_rule_path: str = os.path.join(RULE_PATH, "conjugate_rule.json")
-conjugate_rule_dict: Dict[str, list[str]] = read_rule_file(conjugate_rule_path)
-special_rule_path: str = os.path.join(RULE_PATH, "special_rule.json")
-special_rule_dict: Dict[str, list[str]] = read_rule_file(special_rule_path)
-
-
 def convert_orthography(input_text: str) -> list | None:
     """convert input text to the form of a word that appears as an entry in a dictionary,
         for example, convert【気づく】to【気付く】
@@ -65,8 +55,8 @@ def convert_orthography(input_text: str) -> list | None:
 
 
 def convert_conjugate(input_text: str) -> list:
-    """convert a verb conjugation to basic form.
-        还原动词的活用变形
+    """convert a verb conjugation and adj declension to basic form.
+        还原用言的活用变形
 
     Args:
         input_text: A String containing the conjugation.
@@ -204,6 +194,15 @@ def scan_input_string(input_text: str) -> list:
 
     return scanned_output_list
 
+
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
+RULE_PATH = os.path.join(CURRENT_PATH, "rule")
+orthography_rule_path: str = os.path.join(RULE_PATH, "index.json")
+orthography_rule_dict: Dict[str, list[str]] = read_rule_file(orthography_rule_path)
+conjugate_rule_path: str = os.path.join(RULE_PATH, "conjugate_rule.json")
+conjugate_rule_dict: Dict[str, list[str]] = read_rule_file(conjugate_rule_path)
+special_rule_path: str = os.path.join(RULE_PATH, "special_rule.json")
+special_rule_dict: Dict[str, list[str]] = read_rule_file(special_rule_path)
 
 if __name__ == "__main__":
     print("Hello there.\n  This is indented.")
