@@ -14,43 +14,27 @@ class TestMain(unittest.TestCase):
     def test_scan_input_string(self):
         """测试 main.py 中的 scan_input_string 方法"""
         # TODO 使用表测试重写下面的测试
-        # 形容词测试
-        # 高か
-        self.assertIn("高い", scan_input_string("高かろう"))
-        self.assertIn("高い", scan_input_string("高かった"))
-        self.assertIn("高い", scan_input_string("高かったり"))
 
-        # 高く
-        # 高くて
-        self.assertIn("高い", scan_input_string("高くて"))
-        # 高くない
-        self.assertIn("高い", scan_input_string("高くない"))
-        # 高くても
-        self.assertIn("高い", scan_input_string("高くても"))
-        # 高くても
-        self.assertIn("高い", scan_input_string("高くても"))
-        # 高くとも
-        self.assertIn("高い", scan_input_string("高くとも"))
-        # 高くなる
-        self.assertIn("高い", scan_input_string("高くなる"))
-        # 高くする
-        self.assertIn("高い", scan_input_string("高くする"))
-
-        # 高け
-        # 高ければ
-        self.assertIn("高い", scan_input_string("高ければ"))
-
-        # 高さ
-        self.assertIn("高い", scan_input_string("高さ"))
-
-        # 高す
-        self.assertIn("高い", scan_input_string("高すぎる"))
-
-        # 高み
-        self.assertIn("高い", scan_input_string("高み"))
-
-        # 高そう
-        self.assertIn("高い", scan_input_string("高そう"))
+        adj_test_cases = [
+            ("高い", "高かろう"),
+            ("高い", "高かった"),
+            ("高い", "高かったり"),
+            ("高い", "高くて"),
+            ("高い", "高くない"),
+            ("高い", "高くても"),
+            ("高い", "高くとも"),
+            ("高い", "高くなる"),
+            ("高い", "高くする"),
+            ("高い", "高ければ"),
+            ("高い", "高さ"),
+            ("高い", "高すぎる"),
+            # https://ja.hinative.com/questions/7668939
+            # 高いそうです　I heard that it was expensive.
+            # 高そうです　　It looks expensive.
+            ("高い", "高そう"),
+            ("高い", "高み"),
+        ]
+        self.do_assert_test(adj_test_cases)
 
         # 一段动词测试
         # 食べろ
@@ -370,6 +354,15 @@ class TestMain(unittest.TestCase):
         # 問お
         # 「問おう。あなたがわたしのマスターか」
         self.assertIn("問う", scan_input_string("問おう"))
+
+    def do_assert_test(self, adj_test_cases):
+        for expected_result, test_text in adj_test_cases:
+            with self.subTest(test_text=test_text, expected_result=expected_result):
+                result = scan_input_string(test_text)
+                self.assertIn(
+                    expected_result,
+                    result,
+                )
 
     def test_convert_conjugate(self):
         """测试 main.py 中的 convert_conjugate 方法
