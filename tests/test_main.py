@@ -37,85 +37,68 @@ class TestMain(unittest.TestCase):
         self.do_assert_test(adj_test_cases)
 
         # 一段动词测试
-        # 食べろ
-        self.assertIn("食べる", scan_input_string("食べろ"))
-        # 食べよ
-        self.assertIn("食べる", scan_input_string("食べよう"))
-        # 食べな
-        self.assertIn("食べる", scan_input_string("食べない"))
-        self.assertIn("食べる", scan_input_string("食べなかった"))
-        self.assertIn("食べる", scan_input_string("食べながら"))
-        self.assertIn("食べる", scan_input_string("食べなければならない"))
-        # 食べま
-        self.assertIn("食べる", scan_input_string("食べます"))
-        self.assertIn("食べる", scan_input_string("食べません"))
-        self.assertIn("食べる", scan_input_string("食べました"))
-        self.assertIn("食べる", scan_input_string("食べませんでした"))
-        self.assertIn("食べる", scan_input_string("食べましょう"))
-        # 食べた
-        self.assertIn("食べる", scan_input_string("食べた"))
-        self.assertIn("食べる", scan_input_string("食べたい"))
-        self.assertIn("食べる", scan_input_string("食べたくない"))
-        # インドでは牛肉を売ったり、食べたりしたと思われた人が殺害される事件も起きている。
-        # https://yourei.jp/%E9%A3%9F%E3%81%B9%E3%82%8B
-        self.assertIn("食べる", scan_input_string("食べたり"))
-        # 食べれ
-        self.assertIn("食べる", scan_input_string("食べれる"))
-        self.assertIn("食べる", scan_input_string("食べれない"))
-        self.assertIn("食べる", scan_input_string("食べれば"))
-        # 食べて
-        self.assertIn("食べる", scan_input_string("食べている"))
-        self.assertIn("食べる", scan_input_string("食べていない"))
-        self.assertIn("食べる", scan_input_string("食べていた"))
-        self.assertIn("食べる", scan_input_string("食べても"))
-        # 食べら
-        self.assertIn("食べる", scan_input_string("食べられる"))
-        # 食べさ
-        self.assertIn("食べる", scan_input_string("食べさせる"))
-        # (疲れているあなたのために（東日本大震災）：こころの散歩道)
-        # 寝食を忘れている人がいたら、無理にでも、寝かせましょう。　 食べさせましょう。
-        # http://www.n-seiryo.ac.jp/~usui/saigai/2011sanrikuoki_eq/tukare.html
-        self.assertIn("食べる", scan_input_string("食べさせましょう。"))
-        # 食べず
-        # https://ja.hinative.com/questions/24501639
-        self.assertIn("食べる", scan_input_string("食べずに、待っていてください。"))
-        # 食べぬ
-        self.assertIn("食べる", scan_input_string("食べぬけど、待っていてください。"))
-        # 食べ、
-        # https://yourei.jp/%E9%A3%9F%E3%81%B9%E3%82%8B
-        # 昼はそばなどを軽く食べ、夜は酒の肴をあてにひたすら酒を飲んでいた。
-        self.assertIn("食べる", scan_input_string("食べ、夜は酒の肴をあてにひたす"))
-        # 食べと
-        # https://zh.hinative.com/questions/19258409
-        # 食べといて=食べておいて＝食べてください
-        self.assertIn("食べる", scan_input_string("食べといて"))
-        # 食べち
-        self.assertIn("食べる", scan_input_string("食べちゃった"))
-        # 食べせ
-        # 「食べせる」より、「食べさせる」のほうが正しいと思うが、「あるもの (存在するもの) すべては正しい（Whatever is, is right.）」
-        # https://tsukubawebcorpus.jp/headword/V.00051/#SS57
-        # (赤ちゃんの月齢別ＱÅ集〜育児の心得〜)
-        # 離乳食はほしがるだけ食べせても大丈夫？
-        self.assertIn("食べる", scan_input_string("食べせても大丈夫"))
-        # 日本人がフランスに住むと食生活はこう変わる！　海外のグルメ事情　文化交流　ヨーロッパ　EU　留学　 メシクエブログ〜それいけ神動画〜/ウェブリブログ)
-        # 何となくトンペー食べせずにはいられなくなりました。
-        self.assertIn("食べる", scan_input_string("食べせずにはいられなくなりました。"))
-        # (お客様の声 | 餃子通販 ぎょうざの宝永　札幌本店)
-        # 忙しくお仕事大変でしょうがお体大事になさって、もっともっと美味しいぎょうざを研究なさって私達に食べせて下さい
-        self.assertIn("食べる", scan_input_string("食べせて下さい"))
-        # 食べん
-        # https://zh.hinative.com/questions/23333121
-        # 「食べんの？」は、普通は「食べるの？」の「る」が「ん」になったものですが、関西の方言などで「食べないの？」という意味になることもあります
-        self.assertIn("食べる", scan_input_string("食べんの？"))
-
-        # 複合動詞
-        self.assertIn("食べる", scan_input_string("食べ始める"))
-        # これ美味しそうですねえ。　 食べに行きたいなあ。
-        # http://ameblo.jp/closdesoleil/entry-11091942958.html
-        self.assertIn("食べる", scan_input_string("食べに行きたいなあ。"))
-
-        self.assertIn("教える", scan_input_string("教えざるを得ない"))
-
+        v1_test_cases = [
+            ("食べる", "食べろ"),
+            ("食べる", "食べよう"),
+            ("食べる", "食べない"),
+            ("食べる", "食べなかった"),
+            ("食べる", "食べながら"),
+            ("食べる", "食べなければならない"),
+            ("食べる", "食べます"),
+            ("食べる", "食べません"),
+            ("食べる", "食べました"),
+            ("食べる", "食べましょう"),
+            ("食べる", "食べた"),
+            ("食べる", "食べたい"),
+            ("食べる", "食べたくない"),
+            ("食べる", "食べたり"),
+            ("食べる", "食べれる"),
+            ("食べる", "食べれない"),
+            ("食べる", "食べれば"),
+            ("食べる", "食べている"),
+            ("食べる", "食べていない"),
+            ("食べる", "食べていた"),
+            ("食べる", "食べても"),
+            ("食べる", "食べられる"),
+            ("食べる", "食べさせる"),
+            # (疲れているあなたのために（東日本大震災）：こころの散歩道)
+            # 寝食を忘れている人がいたら、無理にでも、寝かせましょう。　 食べさせましょう。
+            # http://www.n-seiryo.ac.jp/~usui/saigai/2011sanrikuoki_eq/tukare.html
+            ("食べる", "食べさせましょう"),
+            # 食べずに、待っていてください。
+            # https://ja.hinative.com/questions/24501639
+            ("食べる", "食べずに"),
+            # 食べぬけど、待っていてください。
+            ("食べる", "食べぬ"),
+            # https://yourei.jp/%E9%A3%9F%E3%81%B9%E3%82%8B
+            # 昼はそばなどを軽く食べ、夜は酒の肴をあてにひたすら酒を飲んでいた。
+            ("食べる", "食べ、"),
+            # https://zh.hinative.com/questions/19258409
+            # 食べといて=食べておいて＝食べてください
+            ("食べる", "食べといて"),
+            ("食べる", "食べちゃった"),
+            # 「食べせる」より、「食べさせる」のほうが正しいと思うが、「あるもの (存在するもの) すべては正しい（Whatever is, is right.）」
+            # https://tsukubawebcorpus.jp/headword/V.00051/#SS57
+            # (赤ちゃんの月齢別ＱÅ集〜育児の心得〜)
+            # 離乳食はほしがるだけ食べせても大丈夫？
+            ("食べる", "食べせても大丈夫"),
+            # 日本人がフランスに住むと食生活はこう変わる！　海外のグルメ事情　文化交流　ヨーロッパ　EU　留学　 メシクエブログ〜それいけ神動画〜/ウェブリブログ)
+            # 何となくトンペー食べせずにはいられなくなりました。
+            ("食べる", "食べせずにはいられなくなりました"),
+            # (お客様の声 | 餃子通販 ぎょうざの宝永　札幌本店)
+            # 忙しくお仕事大変でしょうがお体大事になさって、もっともっと美味しいぎょうざを研究なさって私達に食べせて下さい
+            ("食べる", "食べせて下さい"),
+            # https://zh.hinative.com/questions/23333121
+            # 「食べんの？」は、普通は「食べるの？」の「る」が「ん」になったものですが、関西の方言などで「食べないの？」という意味になることもあります
+            ("食べる", "食べんの？"),
+            # 複合動詞
+            ("食べる", "食べ始める"),
+            # これ美味しそうですねえ。　 食べに行きたいなあ。
+            # http://ameblo.jp/closdesoleil/entry-11091942958.html
+            ("食べる", "食べに行きたいなあ"),
+            ("教える", "教えざるを得ない"),
+        ]
+        self.do_assert_test(v1_test_cases)
         # カ行五段动词
         # 書か-ない/ず/ぬ/れる/せる/せられる/される
         self.assertIn("書く", scan_input_string("書かない"))
