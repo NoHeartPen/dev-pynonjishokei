@@ -54,7 +54,7 @@ def convert_orthography(input_text: str) -> list | None:
         return None
 
 
-def convert_conjugate(input_text: str) -> list:
+def convert_conjugate(input_text: str) -> list | None:
     """convert a verb conjugation and adj declension to basic form.
         还原用言的活用变形
 
@@ -64,6 +64,8 @@ def convert_conjugate(input_text: str) -> list:
     Returns:
         The list with conjugation converted to the basic form.
     """
+    if len(input_text) == 0:
+        return None
     input_stem = input_text[0:-1]
     input_last_letter = input_text[-1]
     process_output_list: list[str] = []

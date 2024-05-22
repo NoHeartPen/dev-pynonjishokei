@@ -347,8 +347,8 @@ class TestMain(unittest.TestCase):
                     result,
                 )
 
-    def test_convert_conjugate(self):
-        """测试 main.py 中的 convert_conjugate 方法
+    def test_convert_conjugate_for_rule(self):
+        """测试 main.py 中的 convert_conjugate 方法能否正确覆盖所有还原规则
         注意：只测试与原型等长部分能否正确还原为辞书形
         """
         test_cases = {
@@ -389,6 +389,10 @@ class TestMain(unittest.TestCase):
                 with self.subTest(expected_result=expected_result, test_case=test_case):
                     result_list = convert_conjugate(test_case)
                     self.assertIn(expected_result, result_list)
+
+    def test_convert_conjugate(self):
+        """测试 main.py 中的 convert_conjugate 方法 的各种边界情况"""
+        self.assertEqual(None, convert_conjugate(""))
 
     # def test_convert_nonjishokei(self):
     #     # TODO 测试 convert_nonjishokei 方法，注意该方法和上面 convert_conjugate 的区别在于：这一步要准确判断去除列表后的数据
