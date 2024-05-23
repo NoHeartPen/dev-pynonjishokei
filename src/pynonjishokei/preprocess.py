@@ -66,6 +66,7 @@ def convert_kata_to_hira(input_text: str) -> str:
 def convert_repeated_single_sign(input_text: str) -> str:
     """Converts a repeated single sign (々 or 〻 or ゝ or ヽ) in the given text.
         移除单字符重复符号々、〻、ゝ、ヽ
+        例：日々＝＞日日
 
     Args:
         input_text (str): A string containing the repeated single sign.
@@ -103,6 +104,8 @@ def convert_repeated_single_daku_sign(input_text: str) -> str:
     Returns:
         str: The text with converted repeated single daku sign.
     """
+    # TODO 使用命名分组
+    # TODO 考虑将下面的正则表达式使用recompile 模块提取到模块初始化位置，
     reg = r"^(.*?)(\w{1})(ヾ|ゞ)(.*?)$"
     match = re.match(reg, input_text)
     if not match:
@@ -174,6 +177,7 @@ def convert_repeated_double_daku_sign(input_text: str) -> str:
         new_pre_input_text = daku_character + pre_input_text[1:]
         output_text = pre_input_text + new_pre_input_text + post_input_text
     else:
+        # TODO 下面应该抛出异常
         print(f"input_text is: {input_text}")
         return input_text
     return output_text
@@ -189,6 +193,7 @@ def del_ocr_error(input_text: str) -> str:
     Returns:
         str: a processed string with spaces and newlines removed.
     """
+    # TODO 使用支持自定义规则批量替换的函数
     input_text = input_text.replace(" ", "")
     input_text = input_text.replace("\n", "")
     output_text = input_text.replace("\r\n", "")
