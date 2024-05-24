@@ -66,7 +66,6 @@ def convert_kata_to_hira(input_text: str) -> str:
 def convert_repeated_single_sign(input_text: str) -> str:
     """Converts a repeated single sign (々 or 〻 or ゝ or ヽ) in the given text.
         移除单字符重复符号々、〻、ゝ、ヽ
-        例：日々＝＞日日
 
     Args:
         input_text (str): A string containing the repeated single sign.
@@ -105,22 +104,21 @@ def convert_repeated_single_daku_sign(input_text: str) -> str:
         str: The text with converted repeated single daku sign.
     """
     # TODO 使用命名分组
-    # TODO 考虑将下面的正则表达式使用recompile 模块提取到模块初始化位置，
-    reg = r"^(.*?)(\w{1})(ヾ|ゞ)(.*?)$"
+    # TODO 考虑将下面的正则表达式使用recompile 模块提取到模块初始化位置
+    reg = r"^(?P<pre_sign_text>.*?)(?P<daku_pre_char>\w{1})(ヾ|ゞ)(?P<post_sign_text>.*?)$"
     match = re.match(reg, input_text)
     if not match:
         return input_text
 
     # 匹配单字符浊音符前的字符串（不包括单字符浊音符前的第一个字符串）
-    pre_text = match.group(1)
+    pre_sign_text = match.group("pre_sign_text")
     # 计算单字符浊音符前的第一个字符串
-    char = match.group(2)
-    new_char = chr(ord(char) + 1)
+    pre_sign_char = match.group("daku_pre_char")
+    converted_sign_char = chr(ord(pre_sign_char) + 1)
     # 匹配单字符浊音后的所有字符串
-    post_text = match.group(4)
+    post_sign_text = match.group("post_sign_text")
 
-    output_text = pre_text + char + new_char + post_text
-    return output_text
+    return pre_sign_text + pre_sign_char + converted_sign_char + post_sign_text
 
 
 def convert_repeated_double_sign(input_text: str) -> str:
@@ -177,7 +175,6 @@ def convert_repeated_double_daku_sign(input_text: str) -> str:
         new_pre_input_text = daku_character + pre_input_text[1:]
         output_text = pre_input_text + new_pre_input_text + post_input_text
     else:
-        # TODO 下面应该抛出异常
         print(f"input_text is: {input_text}")
         return input_text
     return output_text
@@ -193,7 +190,6 @@ def del_ocr_error(input_text: str) -> str:
     Returns:
         str: a processed string with spaces and newlines removed.
     """
-    # TODO 使用支持自定义规则批量替换的函数
     input_text = input_text.replace(" ", "")
     input_text = input_text.replace("\n", "")
     output_text = input_text.replace("\r\n", "")
