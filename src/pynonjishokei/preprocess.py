@@ -98,12 +98,13 @@ def convert_repeated_single_daku_sign(input_text: str) -> str:
         移除单字符浊音符号ヾ、ゞ
 
     Args:
-        input_text (str): A string containing the repeated single daku sign.
+        input_text: A string containing the repeated single daku sign.
+            需要移除单字符浊音符号的字符串
 
     Returns:
-        str: The text with converted repeated single daku sign.
+        The text with converted repeated single daku sign.
+            已移除单字符浊音符号的字符串
     """
-    # TODO 使用命名分组
     # TODO 考虑将下面的正则表达式使用recompile 模块提取到模块初始化位置
     reg = r"^(?P<pre_sign_text>.*?)(?P<daku_pre_char>\w{1})(ヾ|ゞ)(?P<post_sign_text>.*?)$"
     match = re.match(reg, input_text)
