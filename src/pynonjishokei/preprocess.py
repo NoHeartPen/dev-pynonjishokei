@@ -127,18 +127,20 @@ def convert_repeated_double_sign(input_text: str) -> str:
         移除多字符重复符号〳〵、／＼、〱
 
     Args:
-        input_text (str): The text containing the repeated double sign.
+        input_text: The text containing the repeated double sign.
+            需要移除多字符重复符号的字符串
 
     Returns:
         str: The text with converted repeated double sign.
+            已移除多字符重复符号的字符串
     """
-    match = re.match(r"^(.+)(〳〵|／＼|〱)$", input_text)
+    match = re.match(r"^(?P<pre_sign_text>.+)(〳〵|／＼|〱)$", input_text)
 
     if not match:
         return input_text
 
     # 匹配多字符重复符号前的字符串
-    pre_input_text = match.group(1)
+    pre_input_text = match.group("pre_sign_text")
 
     output_text = pre_input_text + pre_input_text
     return output_text
