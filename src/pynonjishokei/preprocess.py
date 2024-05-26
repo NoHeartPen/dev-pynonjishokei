@@ -151,20 +151,24 @@ def convert_repeated_double_daku_sign(input_text: str) -> str:
         移除多字符浊音符号 〴〵、／″＼
 
     Args:
-        input_text (str): A String containing the repeated double daku sign.
+        input_text: A String containing the repeated double daku sign.
+            需要移除多字符浊音符号的字符串
 
     Returns:
-        str: The text with converted repeated double daku sign.
+        The text with converted repeated double daku sign.
+            已移除多字符浊音符号的字符串
     """
-    match = re.match(r"^(.*?)(〴〵|／″＼)(.*?)$", input_text)
+    match = re.match(
+        r"^(?P<pre_sign_text>.*?)(〴〵|／″＼)(?P<post_sign_text>.*?)$", input_text
+    )
 
     if not match:
         return input_text
 
     # 匹配多字符浊音符号前的字符串
-    pre_input_text = match.group(1)
+    pre_input_text = match.group("pre_sign_text")
     # 匹配多字符浊音符号后的字符串
-    post_input_text = match.group(3)
+    post_input_text = match.group("post_sign_text")
 
     if re.search(r"[^\u3040-\u30ff]", pre_input_text) is not None:
         # 如果多字符浊音符号前的字符串中不止汉字
@@ -178,6 +182,7 @@ def convert_repeated_double_daku_sign(input_text: str) -> str:
         new_pre_input_text = daku_character + pre_input_text[1:]
         output_text = pre_input_text + new_pre_input_text + post_input_text
     else:
+        # TODO 这里应该用其他逻辑处理
         print(f"input_text is: {input_text}")
         return input_text
     return output_text
