@@ -9,10 +9,10 @@ def del_word_ruby(input_text: str) -> str:
         移除假名注音
 
     Args:
-        input_text (str) : A string contains ruby.
+        input_text : A string contains ruby.
 
     Returns:
-        str: The text with converted ruby character.
+        The text with converted ruby character.
     """
     # 通过检查注音符号前的字符串是否是汉字，判断是否是在为汉字注音
     # 汉字的 Unicode 编码范围请参考下面的链接
@@ -41,13 +41,13 @@ def del_word_ruby(input_text: str) -> str:
 
 def convert_kata_to_hira(input_text: str) -> str:
     """Convert katakana to hiragana in the given text.
-    将片假名转为平假名
+        将片假名转为平假名
 
     Args:
-        input_text (str): A String containing the katakana.
+        input_text: A String containing the katakana.
 
     Returns:
-        str: The text with katakana converted to hiragana.
+        The text with katakana converted to hiragana.
     """
     output_text = ""
     for gana in input_text:
@@ -68,10 +68,10 @@ def convert_repeated_single_sign(input_text: str) -> str:
         移除单字符重复符号々、〻、ゝ、ヽ
 
     Args:
-        input_text (str): A string containing the repeated single sign.
+        input_text: A string containing the repeated single sign.
 
     Returns:
-        str: The text with converted repeated single sign.
+        The text with converted repeated single sign.
     """
     reg = r"^(.*?)(々|〻|ゝ|ヽ)(.*?)$"
     match = re.match(reg, input_text)
@@ -131,7 +131,7 @@ def convert_repeated_double_sign(input_text: str) -> str:
             需要移除多字符重复符号的字符串
 
     Returns:
-        str: The text with converted repeated double sign.
+        The text with converted repeated double sign.
             已移除多字符重复符号的字符串
     """
     match = re.match(r"^(?P<pre_sign_text>.+)(〳〵|／＼|〱)$", input_text)
@@ -151,20 +151,24 @@ def convert_repeated_double_daku_sign(input_text: str) -> str:
         移除多字符浊音符号 〴〵、／″＼
 
     Args:
-        input_text (str): A String containing the repeated double daku sign.
+        input_text: A String containing the repeated double daku sign.
+            需要移除多字符浊音符号的字符串
 
     Returns:
-        str: The text with converted repeated double daku sign.
+        The text with converted repeated double daku sign.
+            已移除多字符浊音符号的字符串
     """
-    match = re.match(r"^(.*?)(〴〵|／″＼)(.*?)$", input_text)
+    match = re.match(
+        r"^(?P<pre_sign_text>.*?)(〴〵|／″＼)(?P<post_sign_text>.*?)$", input_text
+    )
 
     if not match:
         return input_text
 
     # 匹配多字符浊音符号前的字符串
-    pre_input_text = match.group(1)
+    pre_input_text = match.group("pre_sign_text")
     # 匹配多字符浊音符号后的字符串
-    post_input_text = match.group(3)
+    post_input_text = match.group("post_sign_text")
 
     if re.search(r"[^\u3040-\u30ff]", pre_input_text) is not None:
         # 如果多字符浊音符号前的字符串中不止汉字
@@ -178,6 +182,7 @@ def convert_repeated_double_daku_sign(input_text: str) -> str:
         new_pre_input_text = daku_character + pre_input_text[1:]
         output_text = pre_input_text + new_pre_input_text + post_input_text
     else:
+        # TODO 这里应该用其他逻辑处理
         print(f"input_text is: {input_text}")
         return input_text
     return output_text
@@ -188,10 +193,10 @@ def del_ocr_error(input_text: str) -> str:
         移除 OCR 易识别错误的字符
 
     Args:
-        input_text (str): a string containing OCR-detected text with spaces and newlines.
+        input_text: A string containing OCR-detected text with spaces and newlines.
 
     Returns:
-        str: a processed string with spaces and newlines removed.
+        A processed string with spaces and newlines removed.
     """
     input_text = input_text.replace(" ", "")
     input_text = input_text.replace("\n", "")
@@ -204,10 +209,10 @@ def convert_half_full_width(input_text: str) -> str:
         将半角字符转换为全角字符
 
     Args:
-        input_text (str): A string containing half-width characters.
+        input_text: A string containing half-width characters.
 
     Returns:
-        str: A string containing full-width characters.
+        A string containing full-width characters.
     """
     output_text = unicodedata.normalize("NFKC", input_text)
     return output_text
@@ -218,12 +223,13 @@ def preprocess(input_text: str, need_half2full: bool = True) -> str:
         预处理输入文本
 
     Args:
-        input_text (str): The input text.
-        need_half2full(str): Whether to convert half-width characters to full-width characters.
+        input_text: The input text.
+        need_half2full: Whether to convert half-width characters to full-width characters.
 
     Returns:
-        str: The processed text.
+        The processed text.
     """
+    # TODO 重写下面
     input_text = del_ocr_error(input_text)
     if "(" in input_text:
         input_text = del_word_ruby(input_text)
