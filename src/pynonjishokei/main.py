@@ -146,6 +146,9 @@ def scan_input_string(input_text: str) -> list:
     # 预处理
     input_text = preprocess(input_text)
 
+    # TODO
+    # 判断是否含有日文相关字符，比如假名和日文汉字，如果没有直接退出
+
     # 记录扫描的临时字符串
     scanned_input_list: List[str] = []
     # 记录扫描过程中的推导结果
