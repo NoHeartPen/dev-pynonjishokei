@@ -6,6 +6,7 @@ import unittest
 
 from src.pynonjishokei.main import convert_conjugate
 from src.pynonjishokei.main import scan_input_string
+from src.pynonjishokei.main import convert_orthography
 
 
 class TestMain(unittest.TestCase):
@@ -387,14 +388,16 @@ class TestMain(unittest.TestCase):
 
     def test_convert_conjugate(self):
         """测试 main.py 中的 convert_conjugate 方法 的各种边界情况"""
+        self.assertEqual(["123る", "123"], convert_conjugate("123"))
         self.assertEqual(None, convert_conjugate(""))
 
     # def test_convert_nonjishokei(self):
     #     # TODO 测试 convert_nonjishokei 方法，注意该方法和上面 convert_conjugate 的区别在于：这一步要准确判断去除列表后的数据
     #     self.assertEqual()
 
-    # def test_convert_orthography(self):
-    # TODO 这个东西测试的意义就在于防止修改之后索引出现问题，所以这一步的测试其实是要遍历查询v2词库中的所有数据么
+    def test_convert_orthography(self):
+        self.assertEqual(["たべる", "食べる"], convert_orthography("食べる"))
+        self.assertEqual(None, convert_orthography("食べ"))
 
 
 if __name__ == "__main__":
