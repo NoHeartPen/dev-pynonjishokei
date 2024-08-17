@@ -53,7 +53,7 @@ Group's [licence](https://www.edrdg.org/edrdg/licence.html).
 Ling Yang, for not letting me give up learning Japanese, and also for guiding me through the completion of this project
 paper.
 
-Haiying Li, Hui Chen, for giving useful suggestion.
+Haiying Li, Hui Chen, for giving a lot of useful suggestion.
 
 JetBrains, for offering the [PyCharm Community Edition](https://www.jetbrains.com/pycharm) for free.
 
