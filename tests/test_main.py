@@ -448,7 +448,7 @@ class TestMain(unittest.TestCase):
                 # 方便用户手动编辑
                 if test_case not in expected_result:
                     expected_result.append(test_case)
-                self.assertIn(expected_result, result_list)
+                self.assertTrue(all(item in result_list for item in expected_result))
 
     def test_convert_conjugate(self):
         """测试 main.py 中的 convert_conjugate 方法 的各种边界情况"""
