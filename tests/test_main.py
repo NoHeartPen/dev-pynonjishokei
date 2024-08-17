@@ -34,7 +34,7 @@ class TestMain(unittest.TestCase):
             ("高い", "高そう"),
             ("高い", "高み"),
         ]
-        self.do_assert_test(adj_test_cases)
+        self.do_assert_test_scan_input_string(adj_test_cases)
 
         # 一段动词测试
         v1_test_cases = [
@@ -98,7 +98,7 @@ class TestMain(unittest.TestCase):
             ("食べる", "食べに行きたいなあ"),
             ("教える", "教えざるを得ない"),
         ]
-        self.do_assert_test(v1_test_cases)
+        self.do_assert_test_scan_input_string(v1_test_cases)
 
         v5_test_cases = [
             # カ行五段动词
@@ -332,9 +332,9 @@ class TestMain(unittest.TestCase):
             # 「問おう。あなたがわたしのマスターか」
             ("問う", "問おう"),
         ]
-        self.do_assert_test(v5_test_cases)
+        self.do_assert_test_scan_input_string(v5_test_cases)
 
-    def do_assert_test(self, adj_test_cases):
+    def do_assert_test_scan_input_string(self, adj_test_cases):
         for expected_result, test_text in adj_test_cases:
             with self.subTest(test_text=test_text, expected_result=expected_result):
                 result = scan_input_string(test_text)
