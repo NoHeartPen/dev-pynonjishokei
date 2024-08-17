@@ -347,6 +347,7 @@ class TestMain(unittest.TestCase):
 
     def test_scan_input_string(self):
         self.assertEqual([], scan_input_string(""))
+        self.assertEqual(["Hello"], scan_input_string("Hello"))
         self.assertIn("食べる", scan_input_string("食べます。"))
         self.assertIn("食べる", scan_input_string("食べる。"))
 

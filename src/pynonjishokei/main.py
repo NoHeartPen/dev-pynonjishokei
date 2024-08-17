@@ -1,6 +1,7 @@
 """convert a pynonjishokei to a jishokei"""
 
 import json
+import re
 import logging
 import os
 import sys
@@ -133,6 +134,20 @@ def convert_nonjishokei(input_text: str) -> list:
     return output_list
 
 
+def contains_japanese_characters(input_text: str) -> bool:
+    """检查输入字符串是否包含日文字符（假名和汉字）。
+
+    Args:
+        input_text: 要检查的字符串。
+
+    Returns:
+        如果包含日文字符，返回 True；否则返回 False。
+    """
+    # 正则表达式匹配日文字符（假名和汉字）
+    pattern = r"[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]"
+    return bool(re.search(pattern, input_text))
+
+
 def scan_input_string(input_text: str) -> list:
     """Scans the input string by Maximum Matching and returns a list of possible jishokei.
         采用最长一致法扫描字符串，推导并返回所有可能的辞书形
@@ -145,12 +160,12 @@ def scan_input_string(input_text: str) -> list:
     """
     if input_text == "":
         return []
+    # 不含假名和汉字时直接退出
+    if contains_japanese_characters(input_text) is False:
+        return [input_text]
 
     # 预处理
     input_text = preprocess(input_text)
-
-    # TODO
-    # 判断是否含有日文相关字符，比如假名和日文汉字，如果没有直接退出
 
     # 记录扫描的临时字符串
     scanned_input_list: List[str] = []
