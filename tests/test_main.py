@@ -386,6 +386,70 @@ class TestMain(unittest.TestCase):
                     result_list = convert_conjugate(test_case)
                     self.assertIn(expected_result, result_list)
 
+    def test_convert_conjugate_not_real_word(self):
+        # 测试用例均为虚构的日语单词，仅用于测试 src/pynonjishokei/rule/conjugate_rule.json 路径下转换规则文件
+        # 注意键记录的是测试用例，值才是测试结果
+        not_real_test_cases = {
+            "偽、": ["偽る"],
+            "偽い": ["偽う", "偽く", "偽ぐ"],
+            "偽う": ["偽い"],
+            "偽え": ["偽う"],
+            "偽お": ["偽う"],
+            "偽か": ["偽く", "偽い"],
+            "偽き": ["偽く"],
+            "偽く": ["偽い"],
+            "偽け": ["偽い", "偽く"],
+            "偽こ": ["偽く"],
+            "偽が": ["偽ぐ"],
+            "偽ぎ": ["偽ぐ"],
+            "偽げ": ["偽ぐ"],
+            "偽ご": ["偽ぐ"],
+            "偽さ": ["偽く", "偽す", "偽る", "偽い", "偽する"],
+            "偽し": ["偽す", "偽する"],
+            "偽す": ["偽い", "偽する"],
+            "偽せ": ["偽す", "偽る", "偽する"],
+            "偽そ": ["偽す", "偽い", "偽する"],
+            "偽じ": ["偽ずる", "偽す", "偽ず"],
+            "偽ず": ["偽る"],
+            "偽ぜ": ["偽ずる"],
+            "偽た": ["偽る", "偽つ"],
+            "偽ち": ["偽る", "偽つ"],
+            "偽て": ["偽る", "偽つ"],
+            "偽と": ["偽る", "偽つ"],
+            "偽な": ["偽る", "偽ぬ"],
+            "偽に": ["偽ぬ"],
+            "偽ぬ": ["偽る"],
+            "偽ね": ["偽ぬ"],
+            "偽の": ["偽ぬ"],
+            "偽ば": ["偽ぶ"],
+            "偽び": ["偽ぶ"],
+            "偽べ": ["偽ぶ"],
+            "偽ぼ": ["偽ぶ"],
+            "偽ま": ["偽む", "偽る"],
+            "偽み": ["偽む", "偽い"],
+            "偽め": ["偽む"],
+            "偽も": ["偽む"],
+            "偽ら": ["偽る"],
+            "偽り": ["偽る"],
+            "偽れ": ["偽る"],
+            "偽ろ": ["偽る"],
+            "偽っ": ["偽つ", "偽る", "偽う"],
+            "偽わ": ["偽う"],
+            "偽よ": ["偽る"],
+            "偽ん": ["偽る", "偽ぶ", "偽ぬ", "偽む"],
+        }
+        for test_case, expected_result in not_real_test_cases.items():
+            with self.subTest(test_case=test_case, expected_result=expected_result):
+
+                result_list = convert_conjugate(test_case)
+                # 一段动词的连用形1
+                if test_case + "る" not in expected_result:
+                    expected_result.append(test_case + "る")
+                # 方便用户手动编辑
+                if test_case not in expected_result:
+                    expected_result.append(test_case)
+                self.assertIn(expected_result, result_list)
+
     def test_convert_conjugate(self):
         """测试 main.py 中的 convert_conjugate 方法 的各种边界情况"""
         self.assertEqual(["123る", "123"], convert_conjugate("123"))
