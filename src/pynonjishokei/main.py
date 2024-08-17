@@ -112,6 +112,8 @@ def convert_nonjishokei(input_text: str) -> list:
     """
     # 还原动词的活用变形
     converted_conjugate_list = convert_conjugate(input_text)
+    if converted_conjugate_list is None:
+        return []
     # 检查还原结果
     orthography_list: list[str] = []
     logging.debug("all converted conjugate list: %s", converted_conjugate_list)

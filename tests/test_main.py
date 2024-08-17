@@ -453,7 +453,7 @@ class TestMain(unittest.TestCase):
     def test_convert_conjugate(self):
         """测试 main.py 中的 convert_conjugate 方法 的各种边界情况"""
         self.assertEqual(["123る", "123"], convert_conjugate("123"))
-        self.assertEqual(None, convert_conjugate(""))
+        self.assertIsNone(convert_conjugate(""))
 
     # def test_convert_nonjishokei(self):
     #     # TODO 测试 convert_nonjishokei 方法，注意该方法和上面 convert_conjugate 的区别在于：这一步要准确判断去除列表后的数据
