@@ -1,6 +1,8 @@
 import unittest
 
 from src.pynonjishokei.scan_for_phrase import scan_for_phrase
+from src.pynonjishokei.scan_for_phrase import find_phrase
+from src.pynonjishokei.scan_for_phrase import longest_matching_scan
 
 
 def get_nested_list_str_items(input_list: list[list[str]]) -> set[str]:

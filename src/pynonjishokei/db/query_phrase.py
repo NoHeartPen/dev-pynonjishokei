@@ -29,7 +29,7 @@ def is_all_kana(text: str) -> bool:
         text: 要判断的字符串
 
     Returns:
-        True 如果字符串全部由假名构成，否则 False
+        如果字符串全部由假名构成返回 True，否则 False.
     """
 
     return re.match(r"^[\u3040-\u309F\u30A0-\u30FF]+$", text) is not None

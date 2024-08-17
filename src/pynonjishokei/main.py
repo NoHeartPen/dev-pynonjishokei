@@ -69,7 +69,7 @@ def convert_conjugate(input_text: str) -> list | None:
     input_stem = input_text[0:-1]
     input_last_letter = input_text[-1]
     process_output_list: list[str] = []
-    # TODO 一段动词的词干必定是え段假名，对于見る这样汉字就是词干的动词特殊
+    # TODO 一段动词的词干必定是え段假名，但对于对于見る这样汉字就是词干的动词特殊来说，可能需要通过穷举来解决问题
     # 本程序的 input_stem 概念对应的不是一段动词语法意义上的词干
     # 今日は、寿司を**食べ**に銀座に行いきます。
     process_text = input_text + "る"
@@ -92,6 +92,7 @@ def convert_conjugate(input_text: str) -> list | None:
         process_output_list.append(input_text)
 
     # 删除其中的重复值，只保留第一次的结果
+    # TODO 列表推导式重写
     output_list: List[str] = []
     for i in process_output_list:
         if i not in output_list:
@@ -101,14 +102,14 @@ def convert_conjugate(input_text: str) -> list | None:
 
 
 def convert_nonjishokei(input_text: str) -> list:
-    """Convert pynonjishokei to jishokei.
-        将非辞书形还原为辞书形
+    """Convert nonjishokei to jishokei.
+        将体言和用言的非辞书形还原为辞书形
 
     Args:
-        input_text: A String containing the pynonjishokei.
+        input_text: A String containing the nonjishokei.
 
     Returns:
-        The list with pynonjishokei converted to the jishokei.
+        The list with nonjishokei converted to the jishokei.
     """
     # 还原动词的活用变形
     converted_conjugate_list = convert_conjugate(input_text)
@@ -158,9 +159,18 @@ def scan_input_string(input_text: str) -> list:
     for input_index in range(len(input_text) + 1):
         scanned_input_text = input_text[0 : input_index + 1]
         logging.debug("scanned_input_text: %s", scanned_input_text)
+        #
         scanned_input_list.append(scanned_input_text)
+        # 基于现代日语语法将非辞書形还原为辞书形
+        converted_jishokei_list = convert_nonjishokei(scanned_input_text)
+        for converted_jishokei_text in converted_jishokei_list:
+            logging.debug(
+                "add %s to scanned_process_list for converted jishokei",
+                converted_jishokei_text,
+            )
+            scanned_process_list.append(converted_jishokei_text)
 
-        # 特殊规则
+        # 将 rule\special_rule.json 内记录特殊规则的非辞書形还原为辞书形
         special_output_list = special_rule_dict.get(scanned_input_text)
         if special_output_list is not None:
             for special_output_text in special_output_list:
@@ -172,14 +182,6 @@ def scan_input_string(input_text: str) -> list:
 
         # TODO 用户自定义的转换规则
 
-        converted_jishokei_list = convert_nonjishokei(scanned_input_text)
-        for converted_jishokei_text in converted_jishokei_list:
-            logging.debug(
-                "add %s to scanned_process_list for converted jishokei",
-                converted_jishokei_text,
-            )
-            scanned_process_list.append(converted_jishokei_text)
-
     # 返回给用户的扫描结果
     scanned_output_list: List[str] = []
     # 优先展示更长字符串的扫描结果，提高复合动词的使用体验
@@ -190,7 +192,7 @@ def scan_input_string(input_text: str) -> list:
             # TODO 直接删除可能会导致意想不到的问题
             # 如果输入的字符串就是原型：食べる。
             # 更好的做法应该是同时判断是否在用户自己构建的辞典索引中
-            # if i not in scanned_input_list:
+            # if scanned_process_text not in scanned_input_list:
             scanned_output_list.append(scanned_process_text)
 
     # 将输入的字符串作为最后一个结果返回
@@ -211,5 +213,10 @@ conjugate_rule_dict: Dict[str, list[str]] = read_rule_file(conjugate_rule_path)
 special_rule_path: str = os.path.join(RULE_PATH, "special_rule.json")
 special_rule_dict: Dict[str, list[str]] = read_rule_file(special_rule_path)
 
+
+def main():
+    pass
+
+
 if __name__ == "__main__":
-    print("Hello there.\n  This is indented.")
+    main()  # pragma: no cover

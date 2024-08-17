@@ -18,7 +18,7 @@ logging.basicConfig(
     datefmt="%a %d %b %Y %H:%M:%S",
 )
 # TODO 应该从数据库中自动读取 yomi 和 kanji 2列，生成下面的集合
-phrase_words_set = set(["うそ", "つく", "嘘", "付く"])
+phrase_words_set = {"うそ", "つく", "嘘", "付く"}
 
 
 def longest_matching_scan(input_text: str) -> list[list[str]]:

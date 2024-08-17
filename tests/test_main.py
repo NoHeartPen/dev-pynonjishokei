@@ -5,14 +5,16 @@
 import unittest
 
 from src.pynonjishokei.main import convert_conjugate
-from src.pynonjishokei.main import scan_input_string
+from src.pynonjishokei.main import convert_nonjishokei
 from src.pynonjishokei.main import convert_orthography
+from src.pynonjishokei.main import scan_input_string
+from src.pynonjishokei.main import main
 
 
 class TestMain(unittest.TestCase):
     """测试 main.py 中的方法"""
 
-    def test_scan_input_string(self):
+    def test_scan_input_string_for_rule(self):
         """测试 main.py 中的 scan_input_string 方法"""
 
         adj_test_cases = [
@@ -34,7 +36,7 @@ class TestMain(unittest.TestCase):
             ("高い", "高そう"),
             ("高い", "高み"),
         ]
-        self.do_assert_test_scan_input_string(adj_test_cases)
+        self.do_assert_test_scan_input_string_for_rule(adj_test_cases)
 
         # 一段动词测试
         v1_test_cases = [
@@ -98,7 +100,7 @@ class TestMain(unittest.TestCase):
             ("食べる", "食べに行きたいなあ"),
             ("教える", "教えざるを得ない"),
         ]
-        self.do_assert_test_scan_input_string(v1_test_cases)
+        self.do_assert_test_scan_input_string_for_rule(v1_test_cases)
 
         v5_test_cases = [
             # カ行五段动词
@@ -332,9 +334,9 @@ class TestMain(unittest.TestCase):
             # 「問おう。あなたがわたしのマスターか」
             ("問う", "問おう"),
         ]
-        self.do_assert_test_scan_input_string(v5_test_cases)
+        self.do_assert_test_scan_input_string_for_rule(v5_test_cases)
 
-    def do_assert_test_scan_input_string(self, test_cases):
+    def do_assert_test_scan_input_string_for_rule(self, test_cases):
         for expected_result, test_text in test_cases:
             with self.subTest(test_text=test_text, expected_result=expected_result):
                 result = scan_input_string(test_text)
@@ -342,6 +344,16 @@ class TestMain(unittest.TestCase):
                     expected_result,
                     result,
                 )
+
+    def test_scan_input_string(self):
+        self.assertEqual([], scan_input_string(""))
+        self.assertIn("食べる", scan_input_string("食べます。"))
+        self.assertIn("食べる", scan_input_string("食べる。"))
+
+    def test_scan_input_string_for_special_rule(self):
+        # special_rule.json 中记录的规则将在逐字扫描输入字符串的过程中反复执行
+        self.assertIn("行く", scan_input_string("行っ"))
+        self.assertIn("行く", scan_input_string("行った。"))
 
     def test_convert_conjugate_for_rule(self):
         """测试 main.py 中的 convert_conjugate 方法能否正确覆盖所有还原规则
@@ -440,7 +452,6 @@ class TestMain(unittest.TestCase):
         }
         for test_case, expected_result in not_real_test_cases.items():
             with self.subTest(test_case=test_case, expected_result=expected_result):
-
                 result_list = convert_conjugate(test_case)
                 # 一段动词的连用形1
                 if test_case + "る" not in expected_result:
@@ -455,13 +466,25 @@ class TestMain(unittest.TestCase):
         self.assertEqual(["123る", "123"], convert_conjugate("123"))
         self.assertIsNone(convert_conjugate(""))
 
-    # def test_convert_nonjishokei(self):
-    #     # TODO 测试 convert_nonjishokei 方法，注意该方法和上面 convert_conjugate 的区别在于：这一步要准确判断去除列表后的数据
-    #     self.assertEqual()
+    def test_convert_nonjishokei(self):
+        """与 test_convert_conjugate 区别：
+        1. convert_conjugate 不会检查结果的合理性，而 convert_nonjishokei 会基于词库去除实际不存在的单词
+        2. convert_conjugate 是用于处理用言活用的方法，而 convert_nonjishokei 会处理书写导致的体言
+        """
+        self.assertEqual([], convert_nonjishokei(""))
+        # 现代日语中并不存在能活用为 食ひ 的单词
+        self.assertEqual([], convert_nonjishokei("食ひ"))
+        # 体言
+        self.assertIn("障害", convert_nonjishokei("障がい"))
+        #
+        self.assertIn("しょうがい", convert_nonjishokei("障がい"))
 
     def test_convert_orthography(self):
         self.assertEqual(["たべる", "食べる"], convert_orthography("食べる"))
         self.assertEqual(None, convert_orthography("食べ"))
+
+    def test_main(self):
+        main()
 
 
 if __name__ == "__main__":
