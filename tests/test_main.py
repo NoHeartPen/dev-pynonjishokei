@@ -334,8 +334,8 @@ class TestMain(unittest.TestCase):
         ]
         self.do_assert_test_scan_input_string(v5_test_cases)
 
-    def do_assert_test_scan_input_string(self, adj_test_cases):
-        for expected_result, test_text in adj_test_cases:
+    def do_assert_test_scan_input_string(self, test_cases):
+        for expected_result, test_text in test_cases:
             with self.subTest(test_text=test_text, expected_result=expected_result):
                 result = scan_input_string(test_text)
                 self.assertIn(
