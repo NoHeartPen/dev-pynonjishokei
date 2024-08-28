@@ -2,9 +2,9 @@ import logging
 import sys
 import time
 
-from src.pynonjishokei.db.query_phrase import query_phrase
+from .src.pynonjishokei.db.query_phrase import query_phrase
 
-from src.pynonjishokei.main import scan_input_string
+from .src.pynonjishokei.main import scan_input_string
 
 logging.basicConfig(
     handlers=[
