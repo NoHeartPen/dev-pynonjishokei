@@ -2,9 +2,9 @@ import logging
 import sys
 import time
 
-from src.pynonjishokei.db.query_phrase import query_phrase
+from .src.pynonjishokei.db.query_phrase import query_phrase
 
-from src.pynonjishokei.main import scan_input_string
+from .src.pynonjishokei.main import scan_input_string
 
 logging.basicConfig(
     handlers=[
@@ -54,18 +54,20 @@ def longest_matching_scan(input_text: str) -> list[list[str]]:
             scanning_string,
         )
         jishokei_scanning_list = scan_input_string(scanning_string)
-
         scanned_word_list = []
         for jishokei_string in jishokei_scanning_list:
+            # 如果扫描出的辞书形在词组搭配的辞书形内，说明可能存在词组搭配
             if jishokei_string in phrase_words_set:
                 logging.debug("add %s to %s", jishokei_string, scanned_word_list)
                 scanned_word_list.append(jishokei_string)
-                # 成功识别出词汇，将前索引移动到后索引所在的位置，继续移动后索引向后扫描识别剩下的字符串
+                # 成功识别出可能时词汇，将前索引移动到后索引所在的位置，继续移动后索引向后扫描识别剩下的字符串
                 pre_scanning_index = post_scanning_index
 
+        # 如果未扫描出词组搭配相关的单词，直接退出
         if len(scanned_word_list) > 0:
             # 将单次的识别结果单独保存到一个列表中
             logging.debug("add %s to %s", scanned_word_list, scanned_output_list)
+            # FIXME 确定一个 list 可以用这种方式直接添加吗
             scanned_output_list.append(scanned_word_list)
     return scanned_output_list
 
