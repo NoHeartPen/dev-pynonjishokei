@@ -477,8 +477,15 @@ class TestMain(unittest.TestCase):
         self.assertEqual([], convert_nonjishokei("食ひ"))
         # 体言
         self.assertIn("障害", convert_nonjishokei("障がい"))
-        #
+        self.assertIn("障害", convert_nonjishokei("障害"))
         self.assertIn("しょうがい", convert_nonjishokei("障がい"))
+        # 形容词
+        self.assertIn("あつい", convert_nonjishokei("アツい"))
+        self.assertIn("あつい", convert_nonjishokei("アツく"))
+        self.assertIn("あつい", convert_nonjishokei("あつい"))
+        # 外来语
+        self.assertIn("コンピューター", convert_nonjishokei("コンピューター"))
+        self.assertIn("コンピューター", convert_nonjishokei("コンピュータ"))
 
     def test_convert_orthography(self):
         self.assertEqual(["たべる", "食べる"], convert_orthography("食べる"))

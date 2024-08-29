@@ -10,6 +10,7 @@ from typing import Dict, List
 
 # pylint: disable=E0402
 from .preprocess import preprocess  # type: ignore
+from .preprocess import convert_kata_to_hira  # type: ignore
 
 logging.basicConfig(
     handlers=[
@@ -50,7 +51,14 @@ def convert_orthography(input_text: str) -> list | None:
         the form of a word that appears as an entry in a dictionary
     """
     if input_text in orthography_rule_dict:
-        return orthography_rule_dict[input_text]
+        orthography_list = []
+        for word in orthography_rule_dict[input_text]:
+            if word == "":
+                # 为了节约空间，约定在index.json文件中：空字符串表示和键一样，所以这里直接将键添加到结果中
+                orthography_list.append(input_text)
+            else:
+                orthography_list.append(word)
+        return orthography_list
     else:
         return None
 
@@ -112,12 +120,38 @@ def convert_nonjishokei(input_text: str) -> list:
     Returns:
         The list with nonjishokei converted to the jishokei.
     """
+    if input_text == "":
+        # FIXME 这个方法本就不该被外部调用，所以不可能传入空字符串
+        return []
+
+    # 保留检查还原结果
+    orthography_list: list[str] = []
+
+    # 还原体言的非辞書形，防止错误推导名词和外来语
+    orthography_text = convert_orthography(input_text)
+    if orthography_text is not None:
+        orthography_list.extend(set(orthography_text))
+
+    # 还原片假名导致的非辞書形，例如：アツい
+    # 为了节约空间，约定 index.json 文件中：统一使用平假名记录辞书形
+    # FIXME 为了减少推导结果中的无关结果，应该针对用言优先使用平假名，而体言还是保留平片假名的书写习惯
+    if re.match(r"^[\u30A0-\u30FF]+$", input_text):
+        # 如果全为片假名书写，说明是极有可能外来语，为了节省空间，直接返回结果
+        input_text = convert_kata_to_hira(input_text)
+        orthography_list.append(input_text)
+    else:
+        # 如果不全为片假名，那么一般是特殊情况，需要判断是否真实存在，再添加到结果中
+        input_text = convert_kata_to_hira(input_text)
+        orthography_text = convert_orthography(input_text)
+        if orthography_text is not None:
+            # 获取辞书形
+            # TODO 注意这里的逻辑其实可以优化233
+            orthography_list.extend(set(orthography_text))
+
     # 还原动词的活用变形
     converted_conjugate_list = convert_conjugate(input_text)
     if converted_conjugate_list is None:
         return []
-    # 检查还原结果
-    orthography_list: list[str] = []
     logging.debug("all converted conjugate list: %s", converted_conjugate_list)
     for converted_word in converted_conjugate_list:
         orthography_text = convert_orthography(converted_word)

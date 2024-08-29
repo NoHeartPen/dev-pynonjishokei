@@ -237,8 +237,6 @@ def preprocess(input_text: str, need_half2full: bool = True) -> str:
     if need_half2full:
         input_text = convert_half_full_width(input_text)
 
-    # 转换片假名书写的单词
-    input_text = convert_kata_to_hira(input_text)
     if re.search(r"(\w)([々〻ゝヽ])", input_text) is not None:
         input_text = convert_repeated_single_sign(input_text)
     if re.search(r"^(.*?)(\w)([ヾゞ])(.*?)$", input_text) is not None:
