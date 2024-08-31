@@ -43,6 +43,10 @@ class TestMain(unittest.TestCase):
         self.assertEqual("ちょこちょこ", convert_kata_to_hira("チョコチョコ"))
         # アニメ「ヴァイオレット・エヴァーガーデン」：会えない日が続くと　胸がグッと重くなったりしないか？
         self.assertEqual("ぐっと", convert_kata_to_hira("グッと"))
+        self.assertEqual("こんぴゅーたー", convert_kata_to_hira("コンピューター"))
+        hiragana = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ"
+        katakana = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶ"
+        self.assertEqual(hiragana, convert_kata_to_hira(katakana))
 
     def test_convert_repeated_single_sign(self):
         """单字符重复符号"""
