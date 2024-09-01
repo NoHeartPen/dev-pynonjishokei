@@ -234,6 +234,35 @@ class TestMain(unittest.TestCase):
             ("死ぬ", "死んだ"),
             ("死ぬ", "死んだり"),
             ("死ぬ", "死んでも"),
+            # は行
+            # 虽然暂时不会支持古语，但在青空文库也能看到，所以先行支持部分四段动词的活用
+            # 印度は熱帶だから飯の果と云ふ程度で飯には果物を食はねばならぬ
+            # 日本語歴史コーパス，使用「中納言」检索 https://chunagon.ninjal.ac.jp/
+            ("食う", "食はねばならぬ"),
+            # 帰つて飯でも食はうと門口を這入つた
+            # 坊っちやん https://www.aozora.gr.jp/cards/000148/card50420.html
+            ("食う", "食はうと門口を這入つた"),
+            # 越後の笹飴が食ひたければ
+            # 坊っちやん https://www.aozora.gr.jp/cards/000148/card50420.html
+            ("食う", "食ひたければ"),
+            # 事なるものは午砲を聞きて昼飯を食ひ、忙しきものは孔席暖かならず、墨.
+            # 人生 https://www.aozora.gr.jp/cards/000148/card767.html
+            ("食う", "食ひ、忙しきものは孔席暖かならず、墨."),
+            # どこの國へ行つたつて食ひ物に不自由はしねえ積りだ。
+            # 吾輩ハ猫デアル https://www.aozora.gr.jp/cards/000148/card790.html
+            ("食い物", "食ひ物に不自由はしねえ積りだ。"),
+            # 「ぢや、今日餐を食ひに来ても好いんだらう」
+            # それから  https://www.aozora.gr.jp/cards/000148/card1746.html
+            ("食い", "食ひに来ても好いんだらう"),
+            # 三四郎は特に食ふ時の心得を説明した。
+            # 三四郎 https://www.aozora.gr.jp/cards/000148/card58842.html
+            ("食う", "食ふ時の心得を説明した。"),
+            # 学校の教師をして、一軒ぢや飯が食へないもんだから
+            # それから  https://www.aozora.gr.jp/cards/000148/card1746.html
+            ("食う", "食へないもんだから"),
+            # 強さうだ。車屋に居ると御馳走が食へると見えるね。」 「何にお―れなん..
+            # 吾輩ハ猫デアル https://www.aozora.gr.jp/cards/000148/card790.html
+            ("食う", "食へると見えるね。"),
             # バ行
             # 飛ば-ない/ず/ぬ/れる/せる/せられる/される
             ("飛ぶ", "飛ば"),
@@ -367,6 +396,7 @@ class TestMain(unittest.TestCase):
             "指す": ["指さ", "指し", "指せ", "指そ"],
             "立つ": ["立た", "立ち", "立て", "立と", "立っ"],
             "死ぬ": ["死な", "死に", "死ね", "死の", "死ん"],
+            "妝ふ": ["妝は", "妝ひ", "妝ふ", "妝へ", "妝ほ"],
             "飛ぶ": ["飛ば", "飛び", "飛べ", "飛ぼ", "飛ん"],
             "読む": ["読ま", "読み", "読め", "読も", "読ん"],
             "帰る": ["帰ら", "帰り", "帰れ", "帰ろ", "帰っ"],
@@ -473,8 +503,8 @@ class TestMain(unittest.TestCase):
         2. convert_conjugate 是用于处理用言活用的方法，而 convert_nonjishokei 会处理书写导致的体言
         """
         self.assertEqual([], convert_nonjishokei(""))
-        # 现代日语中并不存在能活用为 食ひ 的单词
-        self.assertEqual([], convert_nonjishokei("食ひ"))
+        # 现代日语中并不存在能活用为 偽ひ 的单词，所以应该返回空列表
+        self.assertEqual([], convert_nonjishokei("偽ひ"))
         # 体言
         self.assertIn("障害", convert_nonjishokei("障がい"))
         self.assertIn("障害", convert_nonjishokei("障害"))
