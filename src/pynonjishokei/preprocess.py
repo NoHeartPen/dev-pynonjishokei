@@ -206,7 +206,8 @@ def del_ocr_error(input_text: str) -> str:
 
 def convert_half_full_width(input_text: str) -> str:
     """Converts half-width characters to full-width characters.
-        将半角字符转换为全角字符
+        将半角字符转换为全角字符。
+        NFKC 模式下会将全角括号转为半角括号
 
     Args:
         input_text: A string containing half-width characters.
@@ -230,12 +231,12 @@ def preprocess(input_text: str, need_half2full: bool = True) -> str:
         The processed text.
     """
     # TODO 重写下面
+    if need_half2full:
+        input_text = convert_half_full_width(input_text)
+
     input_text = del_ocr_error(input_text)
     if "(" in input_text:
         input_text = del_word_ruby(input_text)
-
-    if need_half2full:
-        input_text = convert_half_full_width(input_text)
 
     if re.search(r"(\w)([々〻ゝヽ])", input_text) is not None:
         input_text = convert_repeated_single_sign(input_text)

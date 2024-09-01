@@ -163,6 +163,7 @@ class TestMain(unittest.TestCase):
             "マミムメモャヤュユョヨラリルレロワヲンヴ゙゚"
         )
         self.assertEqual(full_width_text, convert_half_full_width(half_width_text))
+        self.assertEqual("凭(もた)れよふ", convert_half_full_width("凭（もた）れよふ"))
 
 
 if __name__ == "__main__":
