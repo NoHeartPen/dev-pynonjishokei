@@ -464,7 +464,7 @@ class TestMain(unittest.TestCase):
 
     def test_convert_conjugate(self):
         """测试 main.py 中的 convert_conjugate 方法 的各种边界情况"""
-        self.assertEqual(["123る", "123"], convert_conjugate("123"))
+        self.assertEqual(["123る", "123い", "123"], convert_conjugate("123"))
         self.assertIsNone(convert_conjugate(""))
 
     def test_convert_nonjishokei(self):

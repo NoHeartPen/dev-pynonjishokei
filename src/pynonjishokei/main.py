@@ -83,6 +83,9 @@ def convert_conjugate(input_text: str) -> list | None:
     # 今日は、寿司を**食べ**に銀座に行いきます。
     process_text = input_text + "る"
     process_output_list.append(process_text)
+    # 形容词的口语经常省略
+    process_text = input_text + "い"
+    process_output_list.append(process_text)
     logging.debug("add %s to %s: for v1", process_text, process_output_list)
 
     jishokei_last_letter_list = conjugate_rule_dict.get(input_last_letter)
